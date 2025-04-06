@@ -10,6 +10,9 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 
+// Vynutit dynamické renderování této stránky
+export const dynamic = 'force-dynamic';
+
 export default function SignupPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
