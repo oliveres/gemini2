@@ -9,7 +9,25 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
-export default function ProfileForm({ user }: { user: any }) {
+// Definice typů pro User a UserMetadata
+type UserMetadata = {
+  firstName?: string;
+  lastName?: string;
+  avatar_url?: string;
+  full_name?: string;
+}
+
+type User = {
+  id?: string;
+  email?: string;
+  user_metadata?: UserMetadata;
+}
+
+type ErrorWithMessage = {
+  message: string;
+}
+
+export default function ProfileForm({ user }: { user: User }) {
   const [firstName, setFirstName] = useState(user?.user_metadata?.firstName || '')
   const [lastName, setLastName] = useState(user?.user_metadata?.lastName || '')
   const [avatarUrl, setAvatarUrl] = useState(user?.user_metadata?.avatar_url || '')
@@ -47,8 +65,9 @@ export default function ProfileForm({ user }: { user: any }) {
       
       toast.success('Profil byl úspěšně aktualizován')
       router.refresh() // Aktualizace serverových komponent
-    } catch (error: any) {
-      toast.error(`Chyba při aktualizaci profilu: ${error.message}`)
+    } catch (error: unknown) {
+      const err = error as ErrorWithMessage
+      toast.error(`Chyba při aktualizaci profilu: ${err.message}`)
     } finally {
       setIsLoading(false)
     }
@@ -94,8 +113,9 @@ export default function ProfileForm({ user }: { user: any }) {
       if (updateError) throw updateError
 
       toast.success('Profilový obrázek byl úspěšně nahrán')
-    } catch (error: any) {
-      toast.error(`Chyba při nahrávání obrázku: ${error.message}`)
+    } catch (error: unknown) {
+      const err = error as ErrorWithMessage
+      toast.error(`Chyba při nahrávání obrázku: ${err.message}`)
     } finally {
       setIsLoading(false)
     }

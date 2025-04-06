@@ -2,12 +2,9 @@
 
 import * as React from "react"
 import {
-  IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
-  IconFileAi,
-  IconFileDescription,
   IconFileWord,
   IconFolder,
   IconHelp,
@@ -34,6 +31,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
+// Definujeme typ pro uživatele
+type User = {
+  id?: string;
+  email?: string;
+  user_metadata?: {
+    firstName?: string;
+    lastName?: string;
+    avatar_url?: string;
+    full_name?: string;
+  }
+}
 
 const defaultData = {
   navMain: [
@@ -100,7 +109,7 @@ const defaultData = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const supabase = createClient()
 
@@ -109,7 +118,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       try {
         const { data: { user }, error } = await supabase.auth.getUser()
         if (error) throw error
-        setUser(user)
+        setUser(user as User)
       } catch (error) {
         console.error('Error loading user:', error)
       } finally {

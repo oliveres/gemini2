@@ -6,11 +6,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import React from 'react'
 
-interface SignOutButtonProps extends React.ComponentProps<typeof Button> {
-  // No need for additional props
-}
-
-export default function SignOutButton({ ...props }: SignOutButtonProps) {
+export default function SignOutButton({ ...props }: React.ComponentProps<typeof Button>) {
   const router = useRouter()
   const supabase = createClient()
 
